@@ -4,11 +4,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using ToDoList.Models;
 
 namespace ToDoList.Controllers
 {
     public class ValuesController : ApiController
     {
+        private DBModel db = new DBModel();
         // GET api/values
         public IEnumerable<string> Get()
         {
