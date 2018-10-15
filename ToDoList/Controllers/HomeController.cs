@@ -14,6 +14,14 @@ namespace ToDoList.Controllers
         {
             ViewBag.Title = "Home Page";
 
+            var user = new User();
+            user.Name = "name";
+            user.Email = "email";
+            user.Password = "password";
+            db.Users.Add(user);
+
+            db.SaveChanges();
+
             return View();
         }
     }

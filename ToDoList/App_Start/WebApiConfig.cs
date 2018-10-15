@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
+using MySql.Data.Entity;
 
 namespace ToDoList
 {
@@ -19,6 +21,8 @@ namespace ToDoList
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
         }
     }
 }

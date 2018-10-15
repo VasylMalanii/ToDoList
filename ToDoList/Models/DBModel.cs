@@ -3,7 +3,9 @@ namespace ToDoList.Models
     using System;
     using System.Data.Entity;
     using System.Linq;
+    using MySql.Data.Entity;
 
+    [DbConfigurationType(typeof(MySqlEFConfiguration))]
     public class DBModel : DbContext
     {
         // Your context has been configured to use a 'DBModel' connection string from your application's 
@@ -14,7 +16,9 @@ namespace ToDoList.Models
         // connection string in the application configuration file.
         public DBModel()
             : base("name=DBModel")
+
         {
+            this.Database.CreateIfNotExists();
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
