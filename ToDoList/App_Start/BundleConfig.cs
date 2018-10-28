@@ -21,8 +21,8 @@ namespace ToDoList
                       "~/wwwroot/libs/respond.js"));
 
             bundles.Add(new StyleBundle("~/styles/css").Include(
-                      "~/wwwroot/libs/bootstrap.css",
-                      "~/wwwroot/libs/site.css"));
+                      "~/wwwroot/css/bootstrap.css",
+                      "~/wwwroot/css/site.css"));
 
             // Set EnableOptimizations to false for debugging. For more information,
             // visit http://go.microsoft.com/fwlink/?LinkId=301862
