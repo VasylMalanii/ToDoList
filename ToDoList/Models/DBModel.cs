@@ -28,18 +28,19 @@ namespace ToDoList.Models
             modelBuilder.Entity<User>().Property(x => x.Name).IsRequired();
             modelBuilder.Entity<User>().Property(x => x.Password).IsRequired();
             modelBuilder.Entity<User>().Property(x => x.Email).IsRequired();
+
+            modelBuilder.Entity<Category>().HasKey(x => x.Id);
+            modelBuilder.Entity<Category>().Property(x => x.Name).IsRequired();
+            modelBuilder.Entity<Category>().Property(x => x.UserId).IsRequired();
+
+            modelBuilder.Entity<Task>().HasKey(x => x.Id);
+            modelBuilder.Entity<Task>().Property(x => x.Name).IsRequired();
+            modelBuilder.Entity<Task>().Property(x => x.UserId).IsRequired();
+            modelBuilder.Entity<Task>().Property(x => x.CategoryId).IsRequired();
         }
 
         public virtual DbSet<User> Users { get; set; }
-    }
-
-    public class User
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string Token { get; set; }
-        public string ExpiredDate { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Task> Tasks { get; set; }
     }
 }
