@@ -1,1 +1,43 @@
-﻿<p>Content will be here</p>
+﻿<script src="@Url.Content("~/Scripts/home.js")"></script>
+<link href="@Url.Content("~/Content/home.css")" rel="stylesheet" type="text/css" />
+
+<div class="home-content row">
+    <div class="about-container col-md-6">
+        <h3>Extreme TODO</h3>
+        <p>Polkovnyk Seniv</p>
+    </div>
+    <div class="login-container col-md-6">
+        <!-- Tab links -->
+        <div class="tab">
+            <button data-tab="login" class="tablinks">Login</button>
+            <button data-tab="signup" class="tablinks">Sign Up</button>
+        </div>
+
+        <!-- Tab content -->
+        <div id="loginTabContent" class="tabcontent" data-tab="login">
+            <form id="loginForm">
+                <label>Email</label>
+                <input type="text" class="form-control" name="email" />
+                <label>Password</label>
+                <input type="password" class="form-control" name="password" />
+
+                <button type="button" id="loginButton" class="btn btn-success">Login</button>
+            </form>
+        </div>
+
+        <div id="SignupTabContent" class="tabcontent" data-tab="signup">
+            <form id="signupForm">
+                <label>Name</label>
+                <input type="text" class="form-control" name="name" />
+                <label>Email</label>
+                <input type="text" class="form-control" name="email" />
+                <label>Password</label>
+                <input type="password" class="form-control" name="password" />
+                <label>Repeat Password</label>
+                <input type="password" class="form-control" name="repeatPassword" />
+
+                <button type="button" id="signupButton" class="btn btn-success">Sign Up</button>
+            </form>
+        </div>
+    </div>
+</div>
