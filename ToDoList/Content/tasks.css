@@ -1,0 +1,54 @@
+﻿.category-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+}
+
+.category {
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.task, .new-task, .edit-task, .new-category {
+    width: 250px;
+    margin-bottom: 10px;
+}
+
+.new-category {
+    align-self: flex-end;
+    min-width: 250px;
+}
+
+.task-header, .new-task-header, .edit-task-header, .new-category-header {
+    padding: 5px 5px;
+    background-color: lightgray;
+    border-top-right-radius: 10px;
+}
+
+.task-body, .new-task-body, .edit-task-body, .new-category-body, edit {
+    padding: 5px 5px;
+    background-color: whitesmoke;
+    min-height: 80px;
+}
+
+.task-footer, .new-task-footer, .edit-task-footer, .new-category-footer {
+    padding: 5px 3px;
+    text-align: right;
+    background-color: whitesmoke;
+    border-bottom-left-radius: 10px;
+}
+
+.new-task-body > textarea, .edit-task-body > textarea, .new-category-body > textarea {
+    resize: none;
+    height: 70px;
+}
+
+a[role=button] {
+    cursor: pointer;
+}
+
+a[role=button]:hover {
+    text-decoration: none;
+}

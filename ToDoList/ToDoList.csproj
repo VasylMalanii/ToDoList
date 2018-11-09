@@ -141,6 +141,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -154,7 +155,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\home.css" />
+    <Content Include="Content\tasks.css" />
     <Content Include="Scripts\home.js" />
+    <Content Include="Scripts\tasks.js" />
     <Content Include="wwwroot\css\bootstrap.css" />
     <Content Include="wwwroot\css\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -162,6 +165,7 @@
     <Content Include="Global.asax" />
     <Content Include="wwwroot\libs\bootstrap.js" />
     <Content Include="wwwroot\libs\bootstrap.min.js" />
+    <Content Include="Views\Tasks\Tasks.cshtml" />
     <None Include="wwwroot\libs\jquery-1.10.2.intellisense.js" />
     <Content Include="wwwroot\libs\jquery-1.10.2.js" />
     <Content Include="wwwroot\libs\jquery-1.10.2.min.js" />

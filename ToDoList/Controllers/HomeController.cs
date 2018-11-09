@@ -14,7 +14,7 @@ namespace ToDoList.Controllers
         {
             ViewBag.Title = "Home Page";
 
-            var user = new User();
+            /*var user = new User();
             user.Id = 1;
             user.Name = "name";
             user.Email = "email";
@@ -34,7 +34,7 @@ namespace ToDoList.Controllers
             task.CategoryId = category.Id;
             db.Tasks.Add(task);
 
-            db.SaveChanges();
+            db.SaveChanges();*/
 
             return View();
         }
