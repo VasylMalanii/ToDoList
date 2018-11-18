@@ -14,6 +14,36 @@ namespace ToDoList
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "Tasks",
+                url: "",
+                defaults: new { controller = "Tasks", action = "Tasks" }
+            );
+
+            routes.MapRoute(
+                name: "Home",
+                url: "home",
+                defaults: new { controller = "Home", action = "Index" }
+            );
+
+            routes.MapRoute(
+                name: "Signup",
+                url: "signup",
+                defaults: new { controller = "Home", action = "SignUp" }
+            );
+
+            routes.MapRoute(
+                name: "Login",
+                url: "login",
+                defaults: new { controller = "Home", action = "LogIn" }
+            );
+
+            routes.MapRoute(
+                name: "Logout",
+                url: "logout",
+                defaults: new { controller = "Home", action = "LogOut" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

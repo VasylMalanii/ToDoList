@@ -146,6 +146,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\HashHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\DBModel.cs" />
@@ -157,6 +158,7 @@
     <Content Include="Content\home.css" />
     <Content Include="Content\tasks.css" />
     <Content Include="Scripts\home.js" />
+    <Content Include="Scripts\layout.js" />
     <Content Include="Scripts\tasks.js" />
     <Content Include="wwwroot\css\bootstrap.css" />
     <Content Include="wwwroot\css\bootstrap.min.css" />

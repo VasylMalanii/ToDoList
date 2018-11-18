@@ -17,7 +17,7 @@ function initEvents() {
         login(email, password);
     });
 
-    $("#signupButton").on("click", function() {
+    $("#signupButton").on("click", function () {
         var name = $("#signupForm").find("input[name='name']").val();
         var email = $("#signupForm").find("input[name='email']").val();
         var password = $("#signupForm").find("input[name='password']").val();
@@ -42,7 +42,40 @@ function openTab(name) {
 }
 
 function login(email, password) {
-    // todo implement login
+    var params = "email=" + email + "&password=" + password;
+    $.ajax({
+        type: 'POST',
+        url: '/login',
+        data: params,
+        dataType: 'xml',
+        success: function (data) {
+            console.log(getCookie("accountId"));
+            window.location = "/";
+        },
+        error: function (error) {
+            alert("error");
+        }
+    });
+}
+
+function signup(name, email, password) {
+    var user = {};
+    user.Name = name;
+    user.Email = email;
+    user.Password = password;
+    $.ajax({
+        type: 'POST',
+        url: '/signup',
+        data: user,
+        dataType: 'xml',
+        success: function(data) {
+            console.log(getCookie("accountId"));
+            window.location = "/";
+        },
+        error: function(error) {
+            alert("error");
+        }
+    });
 }
 
 function validateSignupData(name, email, password, repeatPassword) {
@@ -90,11 +123,23 @@ function validateSignupData(name, email, password, repeatPassword) {
     return validationPassed;
 }
 
-function signup(name, email, password) {
-    // todo implement signup 
-}
-
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }
