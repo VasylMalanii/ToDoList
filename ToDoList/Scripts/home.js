@@ -64,7 +64,7 @@ function login(email, password) {
             window.location = "/";
         },
         error: function (error) {
-            alert("error");
+            displayError("Incorrect Login or Password. Please try again.");
         }
     });
 }
@@ -83,7 +83,7 @@ function signup(name, email, password) {
             window.location = "/";
         },
         error: function(error) {
-            alert("error");
+            displayError("Unexpected error while trying to Sign Up. Please try again.");
         }
     });
 }
@@ -136,4 +136,13 @@ function validateSignupData(name, email, password, repeatPassword) {
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
+}
+
+function displayError(message) {
+    var html =
+        '<div class="alert alert-danger alert-dismissible">' +
+            '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
+            message +
+            '</div>';
+    $("#message-container").html(html);
 }
