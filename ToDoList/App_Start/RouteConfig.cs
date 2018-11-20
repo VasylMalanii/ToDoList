@@ -44,6 +44,36 @@ namespace ToDoList
             );
 
             routes.MapRoute(
+                name: "GetAccountCategories",
+                url: "get-account-categories",
+                defaults: new { controller = "Tasks", action = "GetAccountCategories" }
+            );
+
+            routes.MapRoute(
+                name: "CreateCategory",
+                url: "post-category",
+                defaults: new { controller = "Tasks", action = "CreateCategory" }
+            );
+
+            routes.MapRoute(
+                name: "CreateTask",
+                url: "post-task",
+                defaults: new { controller = "Tasks", action = "CreateTask" }
+            );
+
+            routes.MapRoute(
+                name: "DeleteTask",
+                url: "delete-task",
+                defaults: new { controller = "Tasks", action = "DeleteTask" }
+            );
+
+            routes.MapRoute(
+                name: "UpdateTask",
+                url: "update-task",
+                defaults: new { controller = "Tasks", action = "UpdateTask" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

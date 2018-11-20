@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -12,10 +13,28 @@ namespace ToDoList.Controllers
 {
     public class HomeController : Controller
     {
-        private DBModel db = new DBModel();
+        public IDbContext db;
+
+        public HomeController()
+        {
+            db = new DBModel();
+        }
+
+        public HomeController(IDbContext db)
+        {
+            this.db = db;
+        }
+
         public ActionResult Index()
         {
-            ViewBag.Title = "Extreme TODO";
+            User account = (User)HttpContext.Session["account"];
+
+            ViewBag.Title = "ExtremeTODO";
+            if (account != null)
+            {
+                ViewBag.AccountId = account.Id;
+                ViewBag.AccountName = account.Name;
+            }
 
             return View();
         }
@@ -28,11 +47,8 @@ namespace ToDoList.Controllers
                 user.Password = HashHelper.GetHash(user.Password);
                 db.Users.Add(user);
                 db.SaveChanges();
-                HttpCookie cookie = new HttpCookie("accountId");
-                cookie.Value = user.Id.ToString();
-                cookie.Expires = DateTime.Now.AddDays(1);
-                Response.Cookies.Add(cookie);
-                HttpContext.Session.Add("account", user);
+
+                AddUserToSession(user);
                 return new HttpStatusCodeResult(HttpStatusCode.OK);
             }
 
@@ -46,11 +62,7 @@ namespace ToDoList.Controllers
             User user = db.Users.FirstOrDefault(u => u.Email == email && u.Password == passwordHash);
             if (user != null)
             {
-                HttpCookie cookie = new HttpCookie("accountId");
-                cookie.Value = user.Id.ToString();
-                cookie.Expires = DateTime.Now.AddDays(1);
-                Response.Cookies.Add(cookie);
-                HttpContext.Session.Add("account", user);
+                AddUserToSession(user);
                 return new HttpStatusCodeResult(HttpStatusCode.OK);
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -59,15 +71,21 @@ namespace ToDoList.Controllers
         [HttpPost]
         public ActionResult LogOut()
         {
-            HttpContext.Session.Remove("account");
-            if (Request.Cookies["accountId"] != null)
-            {
-                HttpCookie cookie = new HttpCookie("accountId");
-                cookie.Expires = DateTime.Now.AddDays(-1);
-                Response.Cookies.Add(cookie);
-            }
+            RemoveUserFromSession();
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        public int AddUserToSession(User user)
+        {
+            HttpContext.Session.Add("account", user);
+            return 0;
+        }
+
+        public int RemoveUserFromSession()
+        {
+            HttpContext.Session.Remove("account");
+            return 0;
         }
     }
 }

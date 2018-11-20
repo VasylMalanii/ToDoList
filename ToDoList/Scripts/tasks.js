@@ -1,60 +1,31 @@
-﻿// test data
-// todo replace with API call. Try to return data in this format so we don't have to change anything
-var categories = [];
-var category1 = {};
-category1.id = 1;
-category1.name = "Category 1";
-category1.description = "Very nice.";
-category1.tasks = [];
-var task1 = {};
-task1.id = 1;
-task1.name = "Extreme Programming - Lab 2";
-task1.description = "Do nothing for 3 weeks, then do nothing some more";
-var task2 = {};
-task2.id = 2;
-task2.name = "Code refactoring - Lab 3";
-task2.description = "Do nothing for 2 weeks, then do nothing some more";
-var task3 = {};
-task3.id = 3;
-task3.name = "Jira and Redmine - Lab 4";
-task3.description = "Do nothing for 1 week...";
-category1.tasks.push(task1);
-category1.tasks.push(task2);
-category1.tasks.push(task3);
+﻿$(document).ready(function () {
+    var accountId = $("#hiddenAccountId").val();
 
-var category2 = {};
-category2.id = 2;
-category2.name = "Category 2";
-category2.description = "Worse.";
-category2.tasks = [];
-var task4 = {};
-task4.id = 4;
-task4.name = "Useless";
-task4.description = "Why are we still here";
-var task5 = {};
-task5.id = 5;
-task5.name = "Facts";
-task5.description = "PES >>>> FIFA";
-var task6 = {};
-task6.id = 6;
-task6.name = "STOP";
-task6.description = "I'm waiting for the worms";
-//category2.tasks.push(task4);
-category2.tasks.push(task5);
-category2.tasks.push(task6);
+    if (accountId === "" || accountId === null || accountId === undefined) {
+        if (window.location.pathname !== "/home") {
+            window.location = "/home";
+        }
+    } else {
+        $(".authorized").show();
+    }
 
-categories.push(category1);
-categories.push(category2);
-
-$(document).ready(function() {
-    // todo get this from ajax call
-    $(".category-container").html(getCategoriesHtml(categories));
+    $.ajax({
+        type: 'GET',
+        url: '/get-account-categories',
+        success: function (categories) {
+            $(".category-container").html(getCategoriesHtml(categories));
+        },
+        error: function(error) {
+            displayError("Unable to load data. Please try to refresh this page or relogin");
+        }
+    });
 });
 
 function addTaskToCategory(categoryId) {
     var newTaskForm = $(".category[data-category-id='" + categoryId + "'] .new-task");
 
     var task = {};
+    task.categoryId = categoryId;
     task.name = newTaskForm.find(".new-task-header input").val();
     task.description = newTaskForm.find(".new-task-body textarea").val();
 
@@ -63,14 +34,22 @@ function addTaskToCategory(categoryId) {
         return;
     }
 
-    //Make API call to save task here. Saved Task Id should be returned.
-    //following code should be executed on request success. Error should be handled with displayMessage function
-    newTaskForm.find(".new-task-header > input").val("");
-    newTaskForm.find(".new-task-body > textarea").val("");
-    var idFromRequest = 1232; // todo change this to real saved id from request
-    task.id = idFromRequest;
-    var newTaskElement = $(getTaskHtml(task)).hide();
-    newTaskElement.insertBefore(newTaskForm).slideDown('fast');
+    $.ajax({
+        type: 'POST',
+        url: '/post-task',
+        data: task,
+        success: function (data) {
+            newTaskForm.find(".new-task-header > input").val("");
+            newTaskForm.find(".new-task-body > textarea").val("");
+            task.id = data.id;
+            var newTaskElement = $(getTaskHtml(task)).hide();
+            newTaskElement.insertBefore(newTaskForm).slideDown('fast');
+        },
+        error: function (error) {
+            displayError("Unexpected error while trying to create a new task.");
+        }
+    });
+    
 }
 
 function enterEditMode(taskId) {
@@ -108,12 +87,20 @@ function saveEdited(taskId) {
         return;
     }
 
-    //Make API call to save task here.
-    //following code should be executed on request success. Error should be handled with displayMessage function
-    editElement.remove();
-    taskElement.show();
-    taskElement.find(".task-header").text(task.name);
-    taskElement.find(".task-body").text(task.description);
+    $.ajax({
+        type: 'PUT',
+        url: '/update-task',
+        data: task,
+        success: function(data) {
+            editElement.remove();
+            taskElement.show();
+            taskElement.find(".task-header").text(task.name);
+            taskElement.find(".task-body").text(task.description);
+        },
+        error: function (error) {
+            displayError("Unexpected error while trying to update a task.");
+        }
+    });
 }
 
 function addNewCategory() {
@@ -128,24 +115,42 @@ function addNewCategory() {
         return;
     }
 
-    //Make API call to save category here. Saved Category Id should be returned.
-    //following code should be executed on request success. Error should be handled with displayMessage function
-    newCategoryForm.find(".new-category-header > input").val("");
-    newCategoryForm.find(".new-category-body > textarea").val("");
-    var idFromRequest = 233343; // todo change this to real saved id from request
-    category.id = idFromRequest;
-    var categoryElement = $(getCategoryHtml(category));
-    categoryElement.insertBefore(newCategoryForm);
+    $.ajax({
+        type: 'POST',
+        url: '/post-category',
+        data: category,
+        success: function (data) {
+            newCategoryForm.find(".new-category-header > input").val("");
+            newCategoryForm.find(".new-category-body > textarea").val("");
+            category.id = data.id;
+            var categoryElement = $(getCategoryHtml(category));
+            categoryElement.insertBefore(newCategoryForm);
+        },
+        error: function (error) {
+            displayError("Unexpected error while trying to create a new category.");
+        }
+    });
 }
 
 function deleteTask(taskId) {
     var taskElement = $(".task[data-task-id='" + taskId + "']");
 
-    //Make API call to delete task here.
-    //following code should be executed on request success. Error should be handled with displayMessage function
-    taskElement.slideUp('fast', function() {
-        $(this).remove();
+    var data = "taskId=" + taskId;
+    $.ajax({
+        type: 'DELETE',
+        url: '/delete-task',
+        data: data,
+        success: function(data) {
+            taskElement.slideUp('fast',
+                function() {
+                    $(this).remove();
+                });
+        },
+        error: function(error) {
+            displayError("Unexpected error while trying to delete a task.");
+        }
     });
+
 }
 
 function getTaskHtml(task) {

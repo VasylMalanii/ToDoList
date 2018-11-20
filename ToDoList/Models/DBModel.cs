@@ -6,7 +6,7 @@ namespace ToDoList.Models
     using MySql.Data.Entity;
 
     [DbConfigurationType(typeof(MySqlEFConfiguration))]
-    public class DBModel : DbContext
+    public class DBModel : DbContext, IDbContext
     {
         // Your context has been configured to use a 'DBModel' connection string from your application's 
         // configuration file (App.config or Web.config). By default, this connection string targets the 
@@ -39,8 +39,8 @@ namespace ToDoList.Models
             modelBuilder.Entity<Task>().Property(x => x.CategoryId).IsRequired();
         }
 
-        public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<Task> Tasks { get; set; }
+        public virtual IDbSet<User> Users { get; set; }
+        public virtual IDbSet<Category> Categories { get; set; }
+        public virtual IDbSet<Task> Tasks { get; set; }
     }
 }
