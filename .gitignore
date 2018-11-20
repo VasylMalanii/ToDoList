@@ -1,5 +1,7 @@
 packages/
 ToDoList/bin/
 ToDoList/obj/
+ToDoTests/bin/
+ToDoTests/bin/
 *.suo
 .vs/

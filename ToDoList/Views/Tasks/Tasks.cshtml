@@ -1,7 +1,8 @@
-﻿<script src="@Url.Content("~/Scripts/tasks.js")"></script>
+﻿<input type="hidden" id="hiddenAccountId" value="@ViewBag.AccountId" />
+
+<script src="@Url.Content("~/Scripts/tasks.js")"></script>
 <link href="@Url.Content("~/Content/tasks.css")" rel="stylesheet" type="text/css"/>
 
-<input type="hidden" id="hiddenAccountId" value="@ViewBag.AccountId" />
 <h3>Your Taskboard, @ViewBag.AccountName</h3>
 <div id="message-container"></div>
 <div class="category-container">

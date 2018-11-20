@@ -1,14 +1,13 @@
-﻿$(document).ready(function () {
-    var accountId = $("#hiddenAccountId").val();
+﻿var accountId = $("#hiddenAccountId").val();
 
-    if (accountId === "" || accountId === null || accountId === undefined) {
-        if (window.location.pathname !== "/home") {
-            window.location = "/home";
-        }
-    } else {
-        $(".authorized").show();
-    }
+if (accountId === "" || accountId === null || accountId === undefined) {
+    $(".authorized").hide();
+    window.location = "/home";
+} else {
+    $(".authorized").show();
+}
 
+$(document).ready(function () {  
     $.ajax({
         type: 'GET',
         url: '/get-account-categories',
