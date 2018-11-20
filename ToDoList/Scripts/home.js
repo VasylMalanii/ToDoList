@@ -17,6 +17,18 @@ function initEvents() {
         login(email, password);
     });
 
+    $('#loginForm').keypress(function (e) {
+        if (e.which == 13) {
+            $("#loginButton").click();
+        }
+    });
+
+    $('#signupForm').keypress(function (e) {
+        if (e.which == 13) {
+            $("#signupButton").click();
+        }
+    });
+
     $("#signupButton").on("click", function () {
         var name = $("#signupForm").find("input[name='name']").val();
         var email = $("#signupForm").find("input[name='email']").val();
