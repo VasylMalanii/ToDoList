@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Web;
 using System.Web.Mvc;
-using ToDoList.Helpers;
 using ToDoList.Models;
-using ToDoList.DTO;
 using ToDoList.DB.Repositories;
 
 namespace ToDoList.Controllers
@@ -22,6 +15,7 @@ namespace ToDoList.Controllers
             userRepository = new UserRepository();
         }
 
+        // Method: GET. Request url: /home
         public ActionResult Index()
         {
             User account = (User)HttpContext.Session["account"];
@@ -36,6 +30,7 @@ namespace ToDoList.Controllers
             return View();
         }
 
+        // Request url: /signup
         [HttpPost]
         public ActionResult SignUp(User user)
         {
@@ -48,6 +43,7 @@ namespace ToDoList.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
+        // Request url: /login
         [HttpPost]
         public ActionResult LogIn(String email, String password)
         {
@@ -60,6 +56,7 @@ namespace ToDoList.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
+        // Request url: /logout
         [HttpPost]
         public ActionResult LogOut()
         {

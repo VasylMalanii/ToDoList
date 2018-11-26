@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using ToDoList.Models;
 using ToDoList.DTO;
-using ToDoList.Helpers;
 
 namespace ToDoList.DB.Repositories
 {
@@ -21,6 +17,12 @@ namespace ToDoList.DB.Repositories
             this.db = db;
         }
 
+        /// <summary>
+        /// Add a new task
+        /// </summary>
+        /// <param name="taskDto">Task object</param>
+        /// <param name="userId">Account Id</param>
+        /// <returns>Task object with id populated</returns>
         public TaskDto Add(TaskDto taskDto, int userId)
         {
             Task task = taskDto.GetTask();
@@ -29,6 +31,12 @@ namespace ToDoList.DB.Repositories
             db.SaveChanges();
             return new TaskDto(task);
         }
+
+        /// <summary>
+        /// Update existing task
+        /// </summary>
+        /// <param name="taskDto">Task object</param>
+        /// <returns>True if updated or False if unsuccessful</returns>
         public bool Update(TaskDto taskDto)
         {
             Task task = db.Tasks.FirstOrDefault(t => t.Id == taskDto.id);
@@ -38,6 +46,12 @@ namespace ToDoList.DB.Repositories
             db.SaveChanges();
             return true;
         }
+
+        /// <summary>
+        /// Removes a task
+        /// </summary>
+        /// <param name="taskId">Task Id to remove</param>
+        /// <returns>True if deleted or False if unsuccessful</returns>
         public bool Delete(int taskId)
         {
             Task task = db.Tasks.FirstOrDefault(t => t.Id == taskId);

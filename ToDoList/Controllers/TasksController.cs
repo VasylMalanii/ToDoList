@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Web;
+﻿using System.Net;
 using System.Web.Mvc;
 using ToDoList.DTO;
 using ToDoList.Models;
@@ -12,17 +8,17 @@ namespace ToDoList.Controllers
 {
     public class TasksController : Controller
     {
-        public IDbContext db;
-        public CategoryRepository categoryRepository;
-        public TaskRepository taskRepository;
+        public IDbContext Db;
+        public CategoryRepository CategoryRepository;
+        public TaskRepository TaskRepository;
 
         public TasksController()
         {
-            categoryRepository = new CategoryRepository();
-            taskRepository = new TaskRepository();
+            CategoryRepository = new CategoryRepository();
+            TaskRepository = new TaskRepository();
         }
 
-        // GET: Tasks
+        // Method: GET. Request url: /
         public ActionResult Tasks()
         {
             User account = (User)HttpContext.Session["account"];
@@ -37,6 +33,7 @@ namespace ToDoList.Controllers
             return View();
         }
 
+        // Request url: /get-account-categories
         [HttpGet]
         public ActionResult GetAccountCategories()
         {
@@ -45,10 +42,11 @@ namespace ToDoList.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var categoryDtos = categoryRepository.GetAll(currentUser.Id);
+            var categoryDtos = CategoryRepository.GetAll(currentUser.Id);
             return Json(categoryDtos, JsonRequestBehavior.AllowGet);
         }
 
+        // Request url: /post-category
         [HttpPost]
         public ActionResult CreateCategory(CategoryDto categoryDto)
         {
@@ -57,12 +55,13 @@ namespace ToDoList.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var category = categoryRepository.Add(categoryDto, currentUser.Id);
+            var category = CategoryRepository.Add(categoryDto, currentUser.Id);
             JsonResult result = new JsonResult();
             result.Data = category;
             return result;
         }
 
+        // Request url: /post-task
         [HttpPost]
         public ActionResult CreateTask(TaskDto taskDto)
         {
@@ -71,12 +70,13 @@ namespace ToDoList.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var task = taskRepository.Add(taskDto, currentUser.Id);
+            var task = TaskRepository.Add(taskDto, currentUser.Id);
             JsonResult result = new JsonResult();
             result.Data = task;
             return result;
         }
 
+        // Request url: /delete-task
         [HttpDelete]
         public ActionResult DeleteTask(int taskId)
         {
@@ -85,7 +85,7 @@ namespace ToDoList.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var isTaskDeleted = taskRepository.Delete(taskId);
+            var isTaskDeleted = TaskRepository.Delete(taskId);
             if (isTaskDeleted == false)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -93,6 +93,7 @@ namespace ToDoList.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
+        // Request url: /update-task
         [HttpPut]
         public ActionResult UpdateTask(TaskDto taskDto)
         {
@@ -101,7 +102,7 @@ namespace ToDoList.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var isTaskUpdated = taskRepository.Update(taskDto);
+            var isTaskUpdated = TaskRepository.Update(taskDto);
             if (isTaskUpdated == false)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

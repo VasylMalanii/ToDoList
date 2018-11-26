@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using ToDoList.Models;
 using ToDoList.DTO;
-using ToDoList.Helpers;
 
 namespace ToDoList.DB.Repositories
 {
@@ -21,8 +18,19 @@ namespace ToDoList.DB.Repositories
             this.db = db;
         }
 
+        /// <summary>
+        /// A Method to add a new Category
+        /// </summary>
+        /// <param name="categoryDto">Category object</param>
+        /// <param name="userId">Id of a user Category belongs to</param>
+        /// <returns>Added category with populated id field</returns>
         public CategoryDto Add(CategoryDto categoryDto, int userId)
         {
+            if (categoryDto == null)
+            {
+                return null;
+            }
+
             Category category = categoryDto.GetCategory();
             category.UserId = userId;
             db.Categories.Add(category);
@@ -30,6 +38,11 @@ namespace ToDoList.DB.Repositories
             return new CategoryDto(category, new List<TaskDto>());
         }
 
+        /// <summary>
+        /// Get list of all categories with tasks populated
+        /// </summary>
+        /// <param name="userId">Id of the current user</param>
+        /// <returns>List of all categories for provided account</returns>
         public List<CategoryDto> GetAll(int userId)
         {
             List<CategoryDto> categoryDtos = new List<CategoryDto>();

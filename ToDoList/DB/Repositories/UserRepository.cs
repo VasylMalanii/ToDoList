@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using ToDoList.Models;
-using ToDoList.DTO;
 using ToDoList.Helpers;
 
 namespace ToDoList.DB.Repositories
@@ -21,11 +18,21 @@ namespace ToDoList.DB.Repositories
             this.db = db;
         }
 
+        /// <summary>
+        /// Get user by email
+        /// </summary>
+        /// <param name="email">Email</param>
+        /// <returns>User</returns>
         public User GetUserByEmail(string email)
         {
             return db.Users.FirstOrDefault(u => u.Email == email);
         }
 
+        /// <summary>
+        /// Create a new user
+        /// </summary>
+        /// <param name="user">User object</param>
+        /// <returns>Created user</returns>
         public User Add(User user)
         {
             if (GetUserByEmail(user.Email) != null)
@@ -37,6 +44,12 @@ namespace ToDoList.DB.Repositories
             return GetUserByEmail(user.Email);
         }
 
+        /// <summary>
+        /// Get a user by email and password
+        /// </summary>
+        /// <param name="email">User Email</param>
+        /// <param name="password">User Password</param>
+        /// <returns>User by credentials</returns>
         public User GetUserByCredentials(String email, String password)
         {
             var passwordHash = HashHelper.GetHash(password);

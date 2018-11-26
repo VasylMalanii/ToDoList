@@ -1,8 +1,6 @@
 namespace ToDoList.Models
 {
-    using System;
     using System.Data.Entity;
-    using System.Linq;
     using MySql.Data.Entity;
 
     [DbConfigurationType(typeof(MySqlEFConfiguration))]
