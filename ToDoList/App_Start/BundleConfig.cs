@@ -24,6 +24,13 @@ namespace ToDoList
                       "~/wwwroot/css/bootstrap.css",
                       "~/wwwroot/css/site.css"));
 
+            bundles.Add(new ScriptBundle("~/scripts/home").Include("~/wwwroot/scripts/home.js"));
+            bundles.Add(new ScriptBundle("~/scripts/layout").Include("~/wwwroot/scripts/layout.js"));
+            bundles.Add(new ScriptBundle("~/scripts/tasks").Include("~/wwwroot/scripts/tasks.js"));
+
+            bundles.Add(new StyleBundle("~/styles/home").Include("~/wwwroot/css/home.css"));
+            bundles.Add(new StyleBundle("~/styles/tasks").Include("~/wwwroot/css/tasks.css"));
+
             // Set EnableOptimizations to false for debugging. For more information,
             // visit http://go.microsoft.com/fwlink/?LinkId=301862
             BundleTable.EnableOptimizations = true;

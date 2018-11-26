@@ -132,9 +132,7 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -142,14 +140,17 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
-    <Compile Include="DTO\CategoryDto.cs" />
-    <Compile Include="DTO\TaskDto.cs" />
+    <Compile Include="DB\DTO\CategoryDto.cs" />
+    <Compile Include="DB\DTO\UserDto.cs" />
+    <Compile Include="DB\DTO\TaskDto.cs" />
+    <Compile Include="DB\Repositories\CategoryRepository.cs" />
+    <Compile Include="DB\Repositories\TaskRepository.cs" />
+    <Compile Include="DB\Repositories\UserRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HashHelper.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="DB\Migrations\Configuration.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\DBModel.cs" />
     <Compile Include="Models\IDbContext.cs" />
@@ -158,11 +159,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\home.css" />
-    <Content Include="Content\tasks.css" />
-    <Content Include="Scripts\home.js" />
-    <Content Include="Scripts\layout.js" />
-    <Content Include="Scripts\tasks.js" />
+    <Content Include="wwwroot\css\home.css" />
+    <Content Include="wwwroot\css\tasks.css" />
+    <Content Include="wwwroot\scripts\home.js" />
+    <Content Include="wwwroot\scripts\layout.js" />
+    <Content Include="wwwroot\scripts\tasks.js" />
     <Content Include="wwwroot\css\bootstrap.css" />
     <Content Include="wwwroot\css\bootstrap.min.css" />
     <Content Include="favicon.ico" />

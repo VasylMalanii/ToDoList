@@ -8,21 +8,18 @@ using System.Web;
 using System.Web.Mvc;
 using ToDoList.Helpers;
 using ToDoList.Models;
+using ToDoList.DTO;
+using ToDoList.DB.Repositories;
 
 namespace ToDoList.Controllers
 {
     public class HomeController : Controller
     {
-        public IDbContext db;
+        UserRepository userRepository;
 
         public HomeController()
         {
-            db = new DBModel();
-        }
-
-        public HomeController(IDbContext db)
-        {
-            this.db = db;
+            userRepository = new UserRepository();
         }
 
         public ActionResult Index()
@@ -42,24 +39,19 @@ namespace ToDoList.Controllers
         [HttpPost]
         public ActionResult SignUp(User user)
         {
-            if (db.Users.Count(u => u.Email == user.Email) == 0)
+            var _user = userRepository.Add(user);
+            if (_user != null)
             {
-                user.Password = HashHelper.GetHash(user.Password);
-                db.Users.Add(user);
-                db.SaveChanges();
-
                 AddUserToSession(user);
                 return new HttpStatusCodeResult(HttpStatusCode.OK);
             }
-
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         [HttpPost]
         public ActionResult LogIn(String email, String password)
         {
-            var passwordHash = HashHelper.GetHash(password);
-            User user = db.Users.FirstOrDefault(u => u.Email == email && u.Password == passwordHash);
+            var user = userRepository.GetUserByCredentials(email, password);
             if (user != null)
             {
                 AddUserToSession(user);

@@ -6,21 +6,20 @@ using System.Web;
 using System.Web.Mvc;
 using ToDoList.DTO;
 using ToDoList.Models;
+using ToDoList.DB.Repositories;
 
 namespace ToDoList.Controllers
 {
     public class TasksController : Controller
     {
         public IDbContext db;
+        public CategoryRepository categoryRepository;
+        public TaskRepository taskRepository;
 
         public TasksController()
         {
-            db = new DBModel();
-        }
-
-        public TasksController(IDbContext db)
-        {
-            this.db = db;
+            categoryRepository = new CategoryRepository();
+            taskRepository = new TaskRepository();
         }
 
         // GET: Tasks
@@ -46,18 +45,7 @@ namespace ToDoList.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            List<CategoryDto> categoryDtos = new List<CategoryDto>();
-
-            var categories = db.Categories.Where(c => c.UserId == currentUser.Id).ToList();
-            foreach (var category in categories)
-            {
-                var tasks = db.Tasks.Where(t => t.CategoryId == category.Id);
-                IEnumerable<TaskDto> taskDtos = tasks.ToList().Select(t => new TaskDto(t));
-                CategoryDto categoryDto = new CategoryDto(category, taskDtos);
-                categoryDtos.Add(categoryDto);
-            }
-
+            var categoryDtos = categoryRepository.GetAll(currentUser.Id);
             return Json(categoryDtos, JsonRequestBehavior.AllowGet);
         }
 
@@ -69,13 +57,9 @@ namespace ToDoList.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            Category category = categoryDto.GetCategory();
-            category.UserId = currentUser.Id;
-            db.Categories.Add(category);
-            db.SaveChanges();
+            var category = categoryRepository.Add(categoryDto, currentUser.Id);
             JsonResult result = new JsonResult();
-            result.Data = new CategoryDto(category, new List<TaskDto>());
+            result.Data = category;
             return result;
         }
 
@@ -87,13 +71,9 @@ namespace ToDoList.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            Task task = taskDto.GetTask();
-            task.UserId = currentUser.Id;
-            db.Tasks.Add(task);
-            db.SaveChanges();
+            var task = taskRepository.Add(taskDto, currentUser.Id);
             JsonResult result = new JsonResult();
-            result.Data = new TaskDto(task);
+            result.Data = task;
             return result;
         }
 
@@ -101,14 +81,15 @@ namespace ToDoList.Controllers
         public ActionResult DeleteTask(int taskId)
         {
             User currentUser = (User)HttpContext.Session["account"];
-            Task task = db.Tasks.FirstOrDefault(t => t.Id == taskId);
-            if (currentUser == null || task == null)
+            if (currentUser == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            db.Tasks.Remove(task);
-            db.SaveChanges();
+            var isTaskDeleted = taskRepository.Delete(taskId);
+            if (isTaskDeleted == false)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
@@ -116,15 +97,15 @@ namespace ToDoList.Controllers
         public ActionResult UpdateTask(TaskDto taskDto)
         {
             User currentUser = (User)HttpContext.Session["account"];
-            Task task = db.Tasks.FirstOrDefault(t => t.Id == taskDto.id);
-            if (currentUser == null || task == null)
+            if (currentUser == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            task.Name = taskDto.name;
-            task.Description = taskDto.description;
-            db.SaveChanges();
+            var isTaskUpdated = taskRepository.Update(taskDto);
+            if (isTaskUpdated == false)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
     }
